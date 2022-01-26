@@ -1,6 +1,11 @@
-var builder = WebApplication.CreateBuilder(args);
-var app = builder.Build();
+using Rigel;
 
-app.MapGet("/", () => "Olá, mundo!");
+WebApplicationBuilder webApplicationBuilder = WebApplication.CreateBuilder(args);
 
-app.Run();
+Startup startup = new Startup(webApplicationBuilder.Configuration);
+startup.ConfigureServices(webApplicationBuilder.Services);
+
+WebApplication webApplication = webApplicationBuilder.Build();
+
+startup.Configure(webApplication, webApplication.Environment);
+webApplication.Run();
